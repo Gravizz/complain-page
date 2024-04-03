@@ -15,6 +15,11 @@ function App() {
       return;
     }
 
+    if (formData.name && !validateName(formData.name)) {
+      alert("ชื่อหรือนามสกุลไม่ถูกต้อง");
+      return;
+    }
+
     if (formData.email && !validateEmail(formData.email)) {
       alert("รูปแบบอีเมลไม่ถูกต้อง");
       return;
@@ -25,7 +30,7 @@ function App() {
       return;
     }
 
-    if (formData.message && !validateMessage(formData.message)) {
+    if (formData.message.length > 1000) {
       alert("ข้อความร้องเรียนยาวเกินกว่าที่กำหนด");
       return;
     }
@@ -40,6 +45,29 @@ function App() {
     console.log(JSON.stringify(formData));
   };
 
+  // Function to validate name
+  const validateName = (name) => {
+    // Validate that there are spaces between the first and last name.
+    if (!/\s/.test(name)) {
+      return false;
+    }
+
+    // Validate that the first and last name do not have spaces at the beginning or end.
+    if (/^\s|\s$/.test(name)) {
+      return false;
+    }
+
+    // Validate that there is at least 1 character appearing on each word.
+    const words = name.split(" ");
+    for (const word of words) {
+      if (word.length < 1) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   // Function to validate email
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -50,10 +78,6 @@ function App() {
   const validatePhone = (phone) => {
     const re = /^[0-9]{10}$/;
     return re.test(phone);
-  };
-
-  const validateMessage = (message) => {
-    return message.length <= 1000;
   };
 
   return (
