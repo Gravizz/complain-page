@@ -12,7 +12,7 @@ const ComplaintForm = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 font-prompt">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="name" className="block font-semibold">
           ชื่อ-นามสกุล:

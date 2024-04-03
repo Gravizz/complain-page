@@ -25,6 +25,11 @@ function App() {
       return;
     }
 
+    if (formData.message && !validateMessage(formData.message)) {
+      alert("ข้อความร้องเรียนยาวเกินกว่าที่กำหนด");
+      return;
+    }
+
     // Set submitted data
     setSubmittedData(formData);
 
@@ -47,8 +52,12 @@ function App() {
     return re.test(phone);
   };
 
+  const validateMessage = (message) => {
+    return message.length <= 1000;
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 font-prompt">
       <h1 className="text-3xl font-semibold mb-4">
         แบบฟอร์มรับเรื่องร้องเรียน
       </h1>
