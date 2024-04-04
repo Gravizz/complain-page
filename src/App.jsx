@@ -57,6 +57,11 @@ function App() {
       return false;
     }
 
+    // Validate that there are no digits in the name.
+    if (/\d/.test(name)) {
+      return false;
+    }
+
     // Validate that there is at least 1 character appearing on each word.
     const words = name.split(" ");
     for (const word of words) {
@@ -86,12 +91,6 @@ function App() {
         แบบฟอร์มรับเรื่องร้องเรียน
       </h1>
       <ComplaintForm onSubmit={handleSubmit} />
-      {/* {submittedData && (
-        <div className="mt-4">
-          <h2 className="text-xl font-semibold mb-2">ข้อมูลที่ส่ง:</h2>
-          <pre>{JSON.stringify(submittedData, null, 2)}</pre>
-        </div>
-      )} */}
     </div>
   );
 }
