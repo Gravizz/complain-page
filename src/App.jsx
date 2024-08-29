@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import ComplaintForm from "./ComplaintForm";
+import React, { useState } from 'react';
+import ComplaintForm from './components/ComplaintForm';
+import Modal from './components/Modal';
 
 function App() {
   const [submittedData, setSubmittedData] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const handleSubmit = (formData) => {
     // Validate form data
@@ -11,35 +14,41 @@ function App() {
       (!formData.email && !formData.phone) ||
       !formData.message
     ) {
-      alert("โปรดกรอกข้อมูลให้ครบถ้วน");
+      setModalMessage('โปรดกรอกข้อมูลให้ครบถ้วน');
+      setModalOpen(true);
       return;
     }
 
     if (formData.name && !validateName(formData.name)) {
-      alert("ชื่อหรือนามสกุลไม่ถูกต้อง");
+      setModalMessage('ชื่อหรือนามสกุลไม่ถูกต้อง');
+      setModalOpen(true);
       return;
     }
 
     if (formData.email && !validateEmail(formData.email)) {
-      alert("รูปแบบอีเมลไม่ถูกต้อง");
+      setModalMessage('รูปแบบอีเมลไม่ถูกต้อง');
+      setModalOpen(true);
       return;
     }
 
     if (formData.phone && !validatePhone(formData.phone)) {
-      alert("รูปแบบเบอร์มือถือไม่ถูกต้อง");
+      setModalMessage('รูปแบบเบอร์มือถือไม่ถูกต้อง');
+      setModalOpen(true);
       return;
     }
 
     if (formData.message.length > 1000) {
-      alert("ข้อความร้องเรียนยาวเกินกว่าที่กำหนด");
+      setModalMessage('ข้อความร้องเรียนยาวเกินกว่าที่กำหนด');
+      setModalOpen(true);
       return;
     }
 
     // Set submitted data
     setSubmittedData(formData);
 
-    // Show alert message
-    alert(`ข้อความร้องเรียน: ${formData.message}`);
+    // Show success message
+    setModalMessage(`ข้อความร้องเรียน: ${formData.message}`);
+    setModalOpen(true);
 
     // Log form data
     console.log(JSON.stringify(formData));
@@ -63,7 +72,7 @@ function App() {
     }
 
     // Validate that there is at least 1 character appearing on each word.
-    const words = name.split(" ");
+    const words = name.split(' ');
     for (const word of words) {
       if (word.length < 1) {
         return false;
@@ -86,11 +95,18 @@ function App() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 font-prompt">
-      <h1 className="text-3xl font-semibold mb-4">
-        แบบฟอร์มรับเรื่องร้องเรียน
-      </h1>
-      <ComplaintForm onSubmit={handleSubmit} />
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-6 font-prompt">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">
+          แบบฟอร์มรับเรื่องร้องเรียน
+        </h1>
+        <ComplaintForm onSubmit={handleSubmit} />
+        <Modal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          message={modalMessage}
+        />
+      </div>
     </div>
   );
 }
